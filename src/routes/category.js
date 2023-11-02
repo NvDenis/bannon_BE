@@ -7,4 +7,6 @@ route.get('/:categoryName', CategoryController.getCategoryByID)
 route.post('/', CategoryController.insertCategories)
 
 
+
+
 export default route;
