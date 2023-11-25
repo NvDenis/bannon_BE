@@ -1,17 +1,15 @@
 import mongoose from "mongoose";
-import Product from "./product";
 
-// Định nghĩa Schema
 const historySchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    email: {
+    fullName: {
         type: String,
         required: true,
     },
     phone: {
+        type: String,
+        required: true,
+    },
+    email: {
         type: String,
         required: true,
     },
@@ -20,12 +18,12 @@ const historySchema = new mongoose.Schema({
         required: true,
     },
     detail: [{
+        id: String,
         thumbnail: String,
         productName: String,
         quantity: Number,
-        _id: String,
+        price: String,
     }],
-
     totalPrice: {
         type: String,
         required: true,
@@ -36,7 +34,6 @@ const historySchema = new mongoose.Schema({
     }
 );
 
-// Tạo Model
 const History = mongoose.model('History', historySchema);
 
 export default History;

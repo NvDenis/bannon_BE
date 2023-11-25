@@ -6,7 +6,7 @@ const categoryMappings = {
     'non-snapback': 'nón snapback',
     'non-ket': 'nón kết',
     'non-jacket': 'nón jacket',
-    'non-đan-tay': 'nón đan tay',
+    'non-dan-tay': 'nón đan tay',
     'non-vanh': 'nón vành',
     'non-phot': 'nón phớt',
     'non-bao-hiem': 'nón bảo hiểm',
@@ -35,15 +35,20 @@ const getCategoryByID = async (req, res) => {
 
 
         const frontendCategoryName = req?.params?.categoryName;
+        console.log('chekc frontendCategoryName', frontendCategoryName);
 
         // Sử dụng danh sách ánh xạ để chuyển đổi tên loại sản phẩm
         const categoryName = categoryMappings[frontendCategoryName];
+        console.log('check categoryName', categoryName);
 
         const categoryID = await CategoryModel.find({name: categoryName})
+        console.log('check categoryID', categoryID);
 
         const products = await ProductModel.find({ category: categoryID })
 
         const category = await CategoryModel.findById(categoryID);
+        console.log('check category', category);
+
 
         res.status(200).json({
             msg: "",

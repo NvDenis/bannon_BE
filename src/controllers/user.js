@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import User from '../models/user.js'
-import { createAccessToken, createRefreshToken } from '../utils/createToken.js'
+import { capitalizeEachWord, createAccessToken, createRefreshToken } from '../utils/createToken.js'
 
 const login = async (req, res) => {
     try {
@@ -50,12 +50,12 @@ const login = async (req, res) => {
         await user.save();
 
         const responseData = {
-            _id: user._id,
+            id: user._id,
             fullName: user.fullName,
             email: user.email,
             phone: user.phone,
             role: user.role,
-            whishList: user.wishList
+            wishList: user.wishList
         };
 
         // Return the token to the user
@@ -73,7 +73,6 @@ const login = async (req, res) => {
         return res.status(500).json({ message: "Server error." });
     }
 }
-
 
 const register = async (req, res) => {
     try {
@@ -104,7 +103,7 @@ const register = async (req, res) => {
 
         // Create a new user
         const newUser = new User({
-            fullName,
+            fullName: capitalizeEachWord(fullName),
             email,
             phone,
             password: hashedPassword
@@ -226,9 +225,6 @@ const fetchAccount = async (req, res) => {
         return res.status(500).json({ msg: 'Internal Server Error', success: false });
     }
 }
-
-
-
 
 
 export default {

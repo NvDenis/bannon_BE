@@ -1,6 +1,6 @@
 import express from 'express'
-import upload from '../config/configMulter.js';
 const router = express.Router();
+import upload from '../config/configMulter.js';
 
 router.post('/upload', upload.single('fileImg'), (req, res) => {
     try {

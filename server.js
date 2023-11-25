@@ -8,7 +8,9 @@ import productRouter from './src/routes/product.js'
 import fileRouter from './src/routes/file.js'
 import categoryRouter from './src/routes/category.js'
 import cors from 'cors'
-import { errorHandler, notFound } from './src/middlewares/errorHandler.js';
+import {  notFound } from './src/middlewares/errorHandler.js';
+import orderRouter from './src/routes/order.js'
+import historyRouter from './src/routes/history.js'
 const PORT = process.env.PORT || 3001
 
 const app = express();
@@ -21,18 +23,14 @@ app.use(cookieParser());
 app.use(express.static('./public'));
 
 
-
-
-
 app.use('/user', userRouter);
 app.use('/product', productRouter);
 app.use('/file', fileRouter);
 app.use('/category', categoryRouter)
+app.use('/order', orderRouter)
+app.use('/history', historyRouter)
 
 
-// app.use((req, res, next) => {
-//   res.status(404).send("Route not found");
-// });
 
 app.use(notFound);
 

@@ -12,6 +12,13 @@ const createRefreshToken = (user) => {
     return refreshToken;
 };
 
+export const capitalizeEachWord = (str) => {
+    return str
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
 export {
     createAccessToken,
     createRefreshToken

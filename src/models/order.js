@@ -2,19 +2,31 @@ import mongoose from "mongoose";
 
 // Định nghĩa Schema
 const orderSchema = new mongoose.Schema({
-    name: {
+    fullName: {
+        type: String,
+        required: true,
+    },
+    phone: {
+        type: String,
+        required: true,
+    },
+    email: {
         type: String,
         required: true,
     },
     address: {
-        type:String,
+        type: String,
         required: true,
     },
-    detail:  [{
+    note: {
+        type: String,
+    },
+    detail: [{
+        id: String,
         thumbnail: String,
         productName: String,
         quantity: Number,
-        _id: String,
+        price: String,
     }],
     totalPrice: {
         type: String,
