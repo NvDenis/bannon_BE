@@ -226,6 +226,110 @@ const fetchAccount = async (req, res) => {
     }
 }
 
+const updateInfo = async (req, res) => {
+    try {
+        const { userId, phone, fullName } = req.body;
+
+        if (!phone || !fullName) {
+            return res.status(400).json({
+                success: false,
+                message: 'Vui lòng nhập đầy đủ thông tin!'
+            });
+        }
+
+        // Tạo một thể hiện của mô hình User
+        const user = await User.findByIdAndUpdate(userId, {
+            phone,
+            fullName: capitalizeEachWord(fullName)
+        }, { new: true });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'Người dùng không tồn tại!'
+            });
+        }
+
+        const responseData = {
+            id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+            wishList: user.wishList
+        };
+
+
+        return res.status(200).json({
+            success: true,
+            message: 'Cập nhật thông tin thành công!',
+            data: {
+                user: responseData
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Đã có lỗi xảy ra trong quá trình xử lý!'
+        });
+    }
+};
+
+const updatePassword = async (req, res) => {
+    try {
+        const { userId, password, newPassword } = req.body;
+        const user = await User.findOne({ _id: userId });
+
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Không tìm thấy người dùng này!'
+            });
+        }
+
+        // Compare passwords
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Mật khẩu không chính xác!' });
+        }
+
+        // Hash the user's password
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+        // Update password in the database
+        const updatedUser = await User.findByIdAndUpdate(userId, {
+            password: hashedPassword,
+        }, { new: true });
+
+        if (!updatedUser) {
+            return res.status(404).json({
+                success: false,
+                message: 'Không tìm thấy người dùng để cập nhật mật khẩu!'
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Đổi mật khẩu thành công!',
+            data: {
+                user: updatedUser
+            }
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Đã có lỗi xảy ra trong quá trình xử lý!'
+        });
+    }
+};
+
+
+
 
 export default {
     login,
@@ -233,4 +337,6 @@ export default {
     refreshToken,
     logout,
     fetchAccount,
+    updateInfo,
+    updatePassword
 }

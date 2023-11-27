@@ -10,6 +10,8 @@ router.get('/', verifyToken, (req, res) => {
     return res.send('hello world 2 ');
 })
 
+router.post('/update-info', userController.updateInfo)
+router.post('/update-password', userController.updatePassword)
 router.post('/login', userController.login)
 router.post('/register', userController.register)
 router.get('/refreshToken', userController.refreshToken)
