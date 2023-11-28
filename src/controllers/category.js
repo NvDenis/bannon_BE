@@ -32,22 +32,38 @@ const getCategories = async (req, res) => {
 
 const getCategoryByID = async (req, res) => {
     try {
+        const categoryID  = req?.params?.categoryID;
+
+        const products = await ProductModel.find({ category: categoryID })
+
+        res.status(200).json({
+            msg: "",
+            success: true,
+            data: {
+                products,
+            }
+        })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ msg: 'Internal Server Error', success: false })
+    }
+}
+
+const getCategoryByName = async (req, res) => {
+    try {
 
 
         const frontendCategoryName = req?.params?.categoryName;
-        console.log('chekc frontendCategoryName', frontendCategoryName);
 
         // Sử dụng danh sách ánh xạ để chuyển đổi tên loại sản phẩm
         const categoryName = categoryMappings[frontendCategoryName];
-        console.log('check categoryName', categoryName);
 
-        const categoryID = await CategoryModel.find({name: categoryName})
-        console.log('check categoryID', categoryID);
+        const categoryID = await CategoryModel.find({ name: categoryName })
 
         const products = await ProductModel.find({ category: categoryID })
 
         const category = await CategoryModel.findById(categoryID);
-        console.log('check category', category);
 
 
         res.status(200).json({
@@ -97,6 +113,7 @@ const insertCategories = async (req, res) => {
 
 export default {
     getCategories,
-    getCategoryByID,
-    insertCategories
+    getCategoryByName,
+    insertCategories,
+    getCategoryByID
 }
